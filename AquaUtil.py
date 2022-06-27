@@ -9,7 +9,7 @@ def crtParmDic(TblName, con, FiltrDic={}, TOCtbl=False, ParamFld='Parameter'):
     a dict. that for any param. we get a list that  contains the x0,x1,x2,x3,x4,x5 values for each parameter.
     In case the table is TOC then there are 2 sets of data for each parameter.
     TblName - string. The table to query
-    con - curser connector. The database curser (from connector)
+    con -  connector. The database  connector
     FiltrDic - dict. The keys are the fields to filter and the values are the
                values to filter upon. The function will use AND between
                each filter
