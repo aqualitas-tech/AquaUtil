@@ -9,7 +9,7 @@ def crtParmDic(TblName, con, FiltrDic={}, TOCtbl=False, ParamFld='Parameter'):
     a dataframe that contains the x0,x1,x2,x3,x4,x5 values for each parameter.
     In case the table is TOC then there are 2 sets of data for each parameter.
     TblName - string. The table to query
-    con - connector. The database connection
+    con - curser connector. The database curser (from connector)
     FiltrDic - dict. The keys are the fields to filter and the values are the
                values to filter upon. The function will use AND between
                each filter
@@ -19,6 +19,10 @@ def crtParmDic(TblName, con, FiltrDic={}, TOCtbl=False, ParamFld='Parameter'):
     return:
     Dataframe with a parameter field and X0,X1,X2,X3,X4,X5 columns.
     In the case of TOC it return 2 sets of X in the format: TOC_X and UVL_X
+
+    Example:
+        FiltrDic = {'device_id':'UNUM0005','Active':1}
+        PrmDic=crtParmDic('Calibration_equations',mycursor,FiltrDic)
     """
     NumFltrElm = len(FiltrDic.keys())
     WhereClause = ""
