@@ -6,7 +6,7 @@ import pandas as pd
 def crtParmDic(TblName, con, FiltrDic={}, TOCtbl=False, ParamFld='Parameter'):
     """
     This function takes table name and a filter dictionary and return
-    a dataframe that contains the x0,x1,x2,x3,x4,x5 values for each parameter.
+    a dict. that for any param. we get a list that  contains the x0,x1,x2,x3,x4,x5 values for each parameter.
     In case the table is TOC then there are 2 sets of data for each parameter.
     TblName - string. The table to query
     con - curser connector. The database curser (from connector)
@@ -17,7 +17,7 @@ def crtParmDic(TblName, con, FiltrDic={}, TOCtbl=False, ParamFld='Parameter'):
              of values to return
     ParamFld - string. The name of the parameter field in the table
     return:
-    Dataframe with a parameter field and X0,X1,X2,X3,X4,X5 columns.
+    Dictionary with a parameter as the key and X0,X1,X2,X3,X4,X5 as a list.
     In the case of TOC it return 2 sets of X in the format: TOC_X and UVL_X
 
     Example:
