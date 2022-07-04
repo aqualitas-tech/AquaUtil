@@ -87,16 +87,14 @@ def DecodeRemarks(df, withExpName=True):
     The function return the original df + the new columns
     if withExpName= true then the first parameter is the experiment name
     """
-    lengthOfComments = df['comment'].str.split('_').str.len()[0]
-    commentList = df['comment'].str.split('_')
-    if withExpName:
-        StartFrom = 1
-        df['ExperName'] = commentList.str[0]
-    else:
-        StartFrom = 0
+    df['lengthOfComments'] = df['comment'].str.split('_').str.len()
+    df['commentList'] = df['comment'].str.split('_')
+    # if there are odd number of elements it removes the first element from the list (usually the experiment name)
+    df['comment2'] = df.apply(lambda x: x.commentList if (x.lengthOfComments %2)==0 else x.commentList[1:],axis=1)
+    lengthOfComments = df['lengthOfComments'].iloc[0]
 
-    for i in range(StartFrom, lengthOfComments, 2):
-        df[commentList.str[i][0]] = commentList.str[i + 1].astype(float)
+    for i in range(0, lengthOfComments, 2):
+        df[df['comment2'].str[i][0]] = df['comment2'].str[i + 1].astype(float)
 
     return df
 
