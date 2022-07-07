@@ -94,7 +94,10 @@ def DecodeRemarks(df, withExpName=True):
     lengthOfComments = df['lengthOfComments'].iloc[0]
 
     for i in range(0, lengthOfComments, 2):
-        df[df['comment2'].str[i][0]] = df['comment2'].str[i + 1].astype(float)
+        param = df['comment2'].str[i][0]
+        if param=='EC':
+            param= 'EC_std'
+        df[param] = df['comment2'].str[i + 1].astype(float)
     df=df.drop(['comment2','lengthOfComments','commentList'],axis=1)
     return df
 
