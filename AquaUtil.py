@@ -92,6 +92,9 @@ def DecodeRemarks(df, withExpName=True):
     # if there are odd number of elements it removes the first element from the list (usually the experiment name)
     df['comment2'] = df.apply(lambda x: x.commentList if (x.lengthOfComments %2)==0 else x.commentList[1:],axis=1)
     lengthOfComments = df['lengthOfComments'].iloc[0]
+    if lengthOfComments == 0 : 
+        print("No comments")
+        return df
 
     for i in range(0, lengthOfComments, 2):
         param = df['comment2'].str[i][0]
