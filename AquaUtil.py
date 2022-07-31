@@ -87,6 +87,7 @@ def DecodeRemarks(df, withExpName=True):
     The function return the original df + the new columns
     if withExpName= true then the first parameter is the experiment name
     """
+    df['comment'] = df['comment'].astype(str) # make sure that the comments is a string column
     if '_' in df['comment'].iloc[0]:
         df['lengthOfComments'] = df['comment'].str.split('_').str.len()
         df['commentList'] = df['comment'].str.split('_')
