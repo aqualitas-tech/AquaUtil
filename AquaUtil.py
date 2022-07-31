@@ -87,21 +87,22 @@ def DecodeRemarks(df, withExpName=True):
     The function return the original df + the new columns
     if withExpName= true then the first parameter is the experiment name
     """
-    df['lengthOfComments'] = df['comment'].str.split('_').str.len()
-    df['commentList'] = df['comment'].str.split('_')
-    # if there are odd number of elements it removes the first element from the list (usually the experiment name)
-    df['comment2'] = df.apply(lambda x: x.commentList if (x.lengthOfComments %2)==0 else x.commentList[1:],axis=1)
-    lengthOfComments = df['lengthOfComments'].iloc[0]
-    if lengthOfComments == 0 : 
-        print("No comments")
-        return df
+    if '_' in df['comment'].iloc[0]:
+        df['lengthOfComments'] = df['comment'].str.split('_').str.len()
+        df['commentList'] = df['comment'].str.split('_')
+        # if there are odd number of elements it removes the first element from the list (usually the experiment name)
+        df['comment2'] = df.apply(lambda x: x.commentList if (x.lengthOfComments %2)==0 else x.commentList[1:],axis=1)
+        lengthOfComments = df['lengthOfComments'].iloc[0]
 
-    for i in range(0, lengthOfComments, 2):
-        param = df['comment2'].str[i][0]
-        if param=='EC':
-            param= 'EC_std'
-        df[param] = df['comment2'].str[i + 1].astype(float)
-    df=df.drop(['comment2','lengthOfComments','commentList'],axis=1)
+        for i in range(0, lengthOfComments, 2):
+            param = df['comment2'].str[i][0]
+            if param=='EC':
+                param= 'EC_std'
+            df[param] = df['comment2'].str[i + 1].astype(float)
+        df=df.drop(['comment2','lengthOfComments','commentList'],axis=1)
+    else:
+        print("No comments")
+    
     return df
 
 
