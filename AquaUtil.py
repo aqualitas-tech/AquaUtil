@@ -77,7 +77,7 @@ def CalibList(x, CalbList, MustBePositive=False):
     return reslt
 
 
-def DecodeRemarks(df, withExpName=True):
+def DecodeRemarks(df):
     """
     Gets dataframe with column "comment"
     Then decode the comment in the following template:
@@ -85,22 +85,24 @@ def DecodeRemarks(df, withExpName=True):
     The values will appeneded to the dataframe and the new columns will be:
     Description and all the ParamName that were given
     The function return the original df + the new columns
-    if withExpName= true then the first parameter is the experiment name
     """
     df['comment'] = df['comment'].astype(str) # make sure that the comments is a string column
     if '_' in df['comment'].iloc[0]:
         df['lengthOfComments'] = df['comment'].str.split('_').str.len()
         df['commentList'] = df['comment'].str.split('_')
+
         # if there are odd number of elements it removes the first element from the list (usually the experiment name)
         df['comment2'] = df.apply(lambda x: x.commentList if (x.lengthOfComments %2)==0 else x.commentList[1:],axis=1)
-        lengthOfComments = df['lengthOfComments'].iloc[0]
+        df['lengthOfComments2'] = df['comment2'].str.len()
+        lengthOfComments = df['lengthOfComments2'].max()
 
         for i in range(0, lengthOfComments, 2):
             param = df['comment2'].str[i][0]
             if param=='EC':
                 param= 'EC_std'
             df[param] = df['comment2'].str[i + 1].astype(float)
-        df=df.drop(['comment2','lengthOfComments','commentList'],axis=1)
+        df=df.drop(['comment2','lengthOfComments','lengthOfComments2','commentList'],axis=1)
+        df = df.loc[:, df.columns.notna()] #Remove columns titled Nan
     else:
         print("No comments")
     
