@@ -97,7 +97,7 @@ def DecodeRemarks(df):
         lengthOfComments = df['lengthOfComments2'].max()
 
         for i in range(0, lengthOfComments, 2):
-            param = df['comment2'].str[i][0]
+            param = df['comment2'].str[i].iloc[0]
             if param=='EC':
                 param= 'EC_std'
             df[param] = df['comment2'].str[i + 1].astype(float)
